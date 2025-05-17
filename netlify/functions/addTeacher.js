@@ -22,15 +22,15 @@ exports.handler = async (event, context) => {
             return { statusCode: 400, body: JSON.stringify({ error: 'الرقم التسلسلي ورقم الإقامة كلاهما مطلوبان للمعلم.' }) };
         }
 
-        console.log("محاولة الاتصال بقاعدة البيانات مع مهلة...");
-        client = new MongoClient(uri, { connectTimeoutMS: 5000 }); // إضافة مهلة 5 ثوانٍ للاتصال
+        console.log("محاولة الاتصال بقاعدة البيانات...");
+        client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, connectTimeoutMS: 5000 }); // إضافة خيارات للاتصال ومهلة
         await client.connect();
         console.log("تم الاتصال بقاعدة البيانات بنجاح!");
 
         const database = client.db(dbName);
         const teachersCollection = database.collection(collectionName);
 
-        console.log("محاولة إدراج المعلم:", { serial_number, residency_number });
+        console.log("محاولة إدراج المعلم:", { serial_number, residency_number, created_at: new Date() });
         const result = await teachersCollection.insertOne({ serial_number, residency_number, created_at: new Date() });
         console.log("نتيجة الإدراج:", result);
 
@@ -42,7 +42,7 @@ exports.handler = async (event, context) => {
 
     } catch (error) {
         console.error('خطأ في وظيفة إضافة المعلم:', error);
-        return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
+        return { statusCode: 500, body: JSON.stringify({ error: error.message || 'حدث خطأ غير متوقع أثناء إضافة المعلم.' }) };
     } finally {
         if (client) {
             await client.close();
