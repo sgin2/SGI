@@ -1,0 +1,12 @@
+[build]
+  base = "/"
+  functions = "netlify/functions"
+
+[functions.generateCertificateTwo4]
+  included_files = ["fonts/arial.ttf"]
+
+[[redirects]]
+  from = "/certificate/:id"
+  to = "/.netlify/functions/generateCertificateTwo4/:id"
+  status = 200
+  force = true
