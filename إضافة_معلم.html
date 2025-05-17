@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>إضافة معلم جديد</title>
-    <link rel="stylesheet" href="../القالب_المشترك.css">
+    <link rel="stylesheet" href="القالب_المشترك.css">
 </head>
 <body>
     <header style="position: relative;">
@@ -63,7 +63,7 @@
             messageDiv.textContent = 'جاري إضافة المعلم...';
             messageDiv.className = 'message';
 
-            const response = await fetch('/teachers/.netlify/functions/addTeacher', {
+            const response = await fetch('/.netlify/functions/addTeacher', { // تم تصحيح عنوان URL هنا
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
