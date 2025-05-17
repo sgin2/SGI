@@ -13,7 +13,7 @@ exports.handler = async (event, context) => {
         return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) };
     }
 
-    let client; // تعريف الـ client هنا عشان يكون متاح في الـ finally
+    let client;
 
     try {
         const { serial_number, residency_number } = JSON.parse(event.body);
@@ -22,12 +22,17 @@ exports.handler = async (event, context) => {
             return { statusCode: 400, body: JSON.stringify({ error: 'الرقم التسلسلي ورقم الإقامة كلاهما مطلوبان للمعلم.' }) };
         }
 
-        client = new MongoClient(uri); // إنشاء الـ client باستخدام رابط اتصال المعلمين
+        console.log("محاولة الاتصال بقاعدة البيانات مع مهلة...");
+        client = new MongoClient(uri, { connectTimeoutMS: 5000 }); // إضافة مهلة 5 ثوانٍ للاتصال
         await client.connect();
+        console.log("تم الاتصال بقاعدة البيانات بنجاح!");
+
         const database = client.db(dbName);
         const teachersCollection = database.collection(collectionName);
 
+        console.log("محاولة إدراج المعلم:", { serial_number, residency_number });
         const result = await teachersCollection.insertOne({ serial_number, residency_number, created_at: new Date() });
+        console.log("نتيجة الإدراج:", result);
 
         if (result.acknowledged && result.insertedId) {
             return { statusCode: 200, body: JSON.stringify({ message: 'تمت إضافة المعلم بنجاح!' }) };
@@ -39,8 +44,9 @@ exports.handler = async (event, context) => {
         console.error('خطأ في وظيفة إضافة المعلم:', error);
         return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
     } finally {
-        if (client) { // التأكد إن الـ client تم إنشاؤه قبل محاولة إغلاقه
+        if (client) {
             await client.close();
+            console.log("تم إغلاق اتصال قاعدة البيانات.");
         }
     }
 };
