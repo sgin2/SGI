@@ -6,6 +6,9 @@ const dbName = "TeachersDB";
 const collectionName = 'enrolled_teachers_tbl';
 
 exports.handler = async (event, context) => {
+    console.log("بدء وظيفة إضافة المعلم");
+    console.log("قيمة MONGODB_URI_TEACHERS:", process.env.MONGODB_URI_TEACHERS);
+
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) };
     }
