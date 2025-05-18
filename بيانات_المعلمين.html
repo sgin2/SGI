@@ -49,7 +49,6 @@
         // دالة لجلب بيانات المعلمين من Netlify Function
         async function fetchTeachers() {
             try {
-                // **تعديل هنا: إزالة '/teachers' من المسار**
                 const response = await fetch('/.netlify/functions/getTeacher');
                 const data = await response.json();
 
@@ -90,7 +89,8 @@
                     deleteCell.innerHTML = `<a href="حذف_المعلم.php?id=${teacher.id}" class="delete-btn" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المعلم؟');">حذف</a>`;
 
                     const printCellOne = row.insertCell();
-                    printCellOne.innerHTML = `<button class="print-btn" onclick="showCertificate('/.netlify/functions/generateCertificateOne?id=${teacher.id}')">عرض الأولى</button>`;
+                    // **تعديل هنا: استخدام المسار الصحيح لوظيفة الشهادة الأولى**
+                    printCellOne.innerHTML = `<button class="print-btn" onclick="showCertificate('/.netlify/functions/generateCertificateOneTeacher3?id=${teacher.id}')">عرض الأولى</button>`;
 
                     const printCellTwo = row.insertCell();
                     const certificateButtonTwo = document.createElement('button');
