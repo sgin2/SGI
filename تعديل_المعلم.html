@@ -56,7 +56,8 @@
                 teacherSerialNumberInput.value = 'جارٍ التحميل...';
                 teacherResidencyNumberInput.value = 'جارٍ التحميل...';
 
-                const response = await fetch(`/teachers/.netlify/functions/getTeacher?id=${id}`);
+                // **تعديل هنا: إزالة '/teachers' من المسار والإبقاء على تمرير id كـ query parameter**
+                const response = await fetch(`/.netlify/functions/getTeacher?id=${id}`);
                 const data = await response.json();
 
                 if (response.ok) {
@@ -86,7 +87,7 @@
             };
 
             try {
-                const response = await fetch('/teachers/.netlify/functions/updateTeacher', {
+                const response = await fetch('/.netlify/functions/updateTeacher', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

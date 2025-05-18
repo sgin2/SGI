@@ -89,14 +89,14 @@
                     deleteCell.innerHTML = `<a href="حذف_المعلم.php?id=${teacher.id}" class="delete-btn" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المعلم؟');">حذف</a>`;
 
                     const printCellOne = row.insertCell();
-                    // **تعديل هنا: استخدام المسار الصحيح لوظيفة الشهادة الأولى**
                     printCellOne.innerHTML = `<button class="print-btn" onclick="showCertificate('/.netlify/functions/generateCertificateOneTeacher3?id=${teacher.id}')">عرض الأولى</button>`;
 
                     const printCellTwo = row.insertCell();
                     const certificateButtonTwo = document.createElement('button');
                     certificateButtonTwo.textContent = 'عرض الثانية';
                     certificateButtonTwo.addEventListener('click', () => {
-                        const certificateUrlTwo = `/teachers/certificate/${teacher.id}`;
+                        // **تعديل هنا: إنشاء رابط URL يطابق نمط مسار وظيفة الشهادة الثانية**
+                        const certificateUrlTwo = `/.netlify/functions/generateCertificateTwoTeacher4/${teacher.id}`;
                         window.open(certificateUrlTwo, '_blank');
                     });
                     printCellTwo.appendChild(certificateButtonTwo);
